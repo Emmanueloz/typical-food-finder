@@ -1,5 +1,7 @@
 ---
 import "../../../styles/Restaurants.css";
+import { config } from "../../../config";
+
 import Layout from "../../../layouts/Layout.astro";
 
 export const prerender = false; // Muy importante
@@ -11,7 +13,7 @@ const getRestaurants = async (
   const options = {
     method: "GET",
     headers: {
-      "x-rapidapi-key": "c5590d1e0bmsh1682411cbaf44edp11c7eajsncfb9272d641b",
+      "x-rapidapi-key": `${config.X_RAPID_API_KEY}`,
       "x-rapidapi-host": "tripadvisor16.p.rapidapi.com",
     },
   };

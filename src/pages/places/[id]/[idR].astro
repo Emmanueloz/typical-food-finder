@@ -1,0 +1,167 @@
+---
+import "../../../styles/Restaurant.css";
+import { config } from "../../../config";
+
+import Layout from "../../../layouts/Layout.astro";
+import MapComponent from "../../../components/MapComponent.astro";
+
+export const prerender = false; // Muy importante
+
+const getRestaurant = async (
+  idR: string
+): Promise<RestaurantDetails | null> => {
+  const url =
+    "https://tripadvisor16.p.rapidapi.com/api/v1/restaurant/getRestaurantDetailsV2?restaurantsId=1313&currencyCode=USD";
+  const options = {
+    method: "GET",
+    headers: {
+      "x-rapidapi-key": `${config.X_RAPID_API_KEY}`,
+      "x-rapidapi-host": "tripadvisor16.p.rapidapi.com",
+    },
+  };
+  try {
+    const res = await fetch(url, options);
+    const body = await res.json();
+    const restaurantDetail = body.data;
+
+    const location = restaurantDetail.location;
+    const hours = restaurantDetail.hours;
+    const overview = restaurantDetail.overview;
+    return {
+      location: {
+        name: location.name,
+        latitude: location.latitude,
+        longitude: location.longitude,
+        ranking: location.ranking,
+      },
+      hours: {
+        openStatusText: hours.openStatusText,
+        currentHoursText: hours.currentHoursText,
+        allOpenHours: hours.allOpenHours,
+      },
+      overview: {
+        name: overview.name,
+        detailId: overview.detailId,
+        contact: {
+          address: overview.contact.address,
+          email: overview.contact.email,
+        },
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+const { id, idR } = Astro.params;
+
+//const restaurantDetail = getRestaurant(idR ?? "");
+const restaurantDetail: RestaurantDetails = {
+  location: {
+    name: "Saptami",
+    latitude: "19.103235",
+    longitude: "72.88693",
+    ranking: "#2 of 14,721 places to eat in Mumbai",
+  },
+  hours: {
+    openStatusText: "Open Now",
+    currentHoursText: "7:00 AM - 11:30 PM",
+    allOpenHours: [
+      {
+        days: "Sun - Sat",
+        times: ["7:00 AM - 11:30 PM"],
+      },
+    ],
+  },
+  overview: {
+    name: "Saptami, India",
+    detailId: 8010527,
+    contact: {
+      address:
+        "Holiday Inn Hotel, Lobby Level, Saki Naka Junction, Andheri Kurla Road, Andheri East, Mumbai 400072 India",
+      email: "saptami@himia.in",
+    },
+  },
+};
+---
+
+<Layout>
+  <main>
+    <div class="container">
+      <div class="header">
+        <div class="detail-id">ID: {restaurantDetail.overview.detailId}</div>
+        <h1 class="restaurant-name">{restaurantDetail.overview.name}</h1>
+        <p class="ranking">{restaurantDetail.location.ranking}</p>
+      </div>
+
+      <div class="content">
+        <!-- Sección de Ubicación -->
+        <div class="section">
+          <h2 class="section-title">
+            <span class="section-icon">📍</span>
+            Ubicación
+          </h2>
+          <div class="location-grid">
+            <div class="location-info">
+              <h3 class="location-name">{restaurantDetail.location.name}</h3>
+              <div class="coordinates">
+                <span class="coordinate"
+                  >📍 Lat: {restaurantDetail.location.latitude}</span
+                >
+                <span class="coordinate"
+                  >📍 Lng: {restaurantDetail.location.longitude}</span
+                >
+              </div>
+            </div>
+            <div class="map-container">
+              <MapComponent
+                latitude={parseFloat(restaurantDetail.location.latitude)}
+                longitude={parseFloat(restaurantDetail.location.longitude)}
+                locationName={restaurantDetail.location.name}
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección de Horarios -->
+        <div class="section">
+          <h2 class="section-title">
+            <span class="section-icon">🕒</span>
+            Horarios
+          </h2>
+          <div class="hours-container">
+            <div class="status-badge">
+              {restaurantDetail.hours.openStatusText}
+            </div>
+            <div class="current-hours">
+              {restaurantDetail.hours.currentHoursText}
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección de Contacto -->
+        <div class="section">
+          <h2 class="section-title">
+            <span class="section-icon">📞</span>
+            Información de Contacto
+          </h2>
+          <div class="contact-info">
+            <div class="contact-item">
+              <span class="contact-icon">📍</span>
+              <span class="contact-text">
+                {restaurantDetail.overview.contact.address}
+              </span>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">📧</span>
+              <span class="contact-text">
+                {restaurantDetail.overview.contact.email}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
