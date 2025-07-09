@@ -4,11 +4,292 @@ import Layout from "../../../layouts/Layout.astro";
 
 export const prerender = false; // Muy importante
 
+const getRestaurants = async (
+  id: string
+): Promise<Array<Restaurant> | undefined> => {
+  const url = `https://tripadvisor16.p.rapidapi.com/api/v1/restaurant/searchRestaurants?locationId=${id}`;
+  const options = {
+    method: "GET",
+    headers: {
+      "x-rapidapi-key": "c5590d1e0bmsh1682411cbaf44edp11c7eajsncfb9272d641b",
+      "x-rapidapi-host": "tripadvisor16.p.rapidapi.com",
+    },
+  };
+  try {
+    const res = await fetch(url, options);
+    const body = await res.json();
+    const restaurants: Array<any> | null = body.data.data;
+
+    console.log(body);
+
+    return restaurants?.map(
+      (restaurant: any): Restaurant => ({
+        locationId: restaurant.locationId,
+        heroImgUrl: restaurant.heroImgUrl,
+        name: restaurant.name,
+        averageRating: restaurant.averageRating,
+        userReviewCount: restaurant.userReviewCount,
+        currentOpenStatusCategory: restaurant.currentOpenStatusCategory,
+        currentOpenStatusText: restaurant.currentOpenStatusText,
+      })
+    );
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
 const { id } = Astro.params;
+//const restaurants: Restaurant[] = await getRestaurants(id ?? "");
+const restaurants: Array<Restaurant> | null = [
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-s/0d/13/75/e0/live-teppanyaki-counter.jpg",
+
+    locationId: 10338075,
+    name: "EAST-EAST ASIAN SPICE TRAIL",
+    averageRating: 5,
+    userReviewCount: 510,
+    currentOpenStatusCategory: "CLOSING",
+    currentOpenStatusText: "Closes in 7 min",
+  },
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-s/0e/de/2b/38/photo2jpg.jpg",
+    locationId: 8010527,
+    name: "Saptami",
+    averageRating: 4.5,
+    userReviewCount: 698,
+    currentOpenStatusCategory: "CLOSED",
+    currentOpenStatusText: "Closed Now",
+  },
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-s/0b/55/a9/05/mabruk-the-mediterranean.jpg",
+    locationId: 1008614,
+    name: "Mabruk",
+    averageRating: 5,
+    userReviewCount: 533,
+    currentOpenStatusCategory: "CLOSED",
+    currentOpenStatusText: "Closed Now",
+  },
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-s/0d/6c/8a/fc/salad-counter.jpg",
+    locationId: 2034948,
+    name: "The Earth Plate",
+    averageRating: 5,
+    userReviewCount: 709,
+    currentOpenStatusCategory: "CLOSING",
+    currentOpenStatusText: "Closes in 6 min",
+  },
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-s/0b/58/1d/b7/namak.jpg",
+    locationId: 2034920,
+    name: "Namak",
+    averageRating: 5,
+    userReviewCount: 571,
+    currentOpenStatusCategory: "CLOSING",
+    currentOpenStatusText: "Closes in 7 min",
+  },
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-s/06/f1/95/d3/peshawri.jpg",
+    locationId: 1014520,
+    name: "Peshawri",
+    averageRating: 4.5,
+    userReviewCount: 2080,
+    currentOpenStatusCategory: "CLOSED",
+    currentOpenStatusText: "Closed Now",
+  },
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-s/25/27/74/e0/caption.jpg",
+    locationId: 21511592,
+    name: "Rasoi Kitchen & Bar",
+    averageRating: 5,
+    userReviewCount: 125,
+    currentOpenStatusCategory: "",
+    currentOpenStatusText: "",
+  },
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-s/19/3c/c2/49/interiors-at-k-k.jpg",
+    locationId: 804433,
+    name: "Kebabs & Kurries",
+    averageRating: 5,
+    userReviewCount: 956,
+    currentOpenStatusCategory: "CLOSED",
+    currentOpenStatusText: "Closed Now",
+  },
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-p/11/aa/49/ad/img20171221202836-largejpg.jpg",
+    locationId: 13325105,
+    name: "Tanatan",
+    averageRating: 5,
+    userReviewCount: 352,
+    currentOpenStatusCategory: "",
+    currentOpenStatusText: "",
+  },
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-s/1b/50/97/63/friends-having-a-good.jpg",
+    locationId: 15223662,
+    name: "Ummrao",
+    averageRating: 5,
+    userReviewCount: 242,
+    currentOpenStatusCategory: "CLOSED",
+    currentOpenStatusText: "Closed Now",
+  },
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-s/19/4c/ca/df/img-20190916-150840-largejpg.jpg",
+    locationId: 15532332,
+    name: "Manuhaar- The Taste of Tradition",
+    averageRating: 5,
+    userReviewCount: 369,
+    currentOpenStatusCategory: "CLOSED",
+    currentOpenStatusText: "Closed Now",
+  },
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-s/1a/95/35/ca/img-20200112-052117-459.jpg",
+    locationId: 19428928,
+    name: "Tanatan",
+    averageRating: 5,
+    userReviewCount: 206,
+    currentOpenStatusCategory: "",
+    currentOpenStatusText: "",
+  },
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-p/16/e9/d3/02/yeda-republic.jpg",
+    locationId: 16845556,
+    name: "Yeda Republic",
+    averageRating: 5,
+    userReviewCount: 169,
+    currentOpenStatusCategory: "OPEN",
+    currentOpenStatusText: "Open Now",
+  },
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-s/1a/03/7b/5b/gallery-cafe-the-global.jpg",
+    locationId: 17609451,
+    name: "Gallery Cafe",
+    averageRating: 5,
+    userReviewCount: 212,
+    currentOpenStatusCategory: "CLOSING",
+    currentOpenStatusText: "Closes in 6 min",
+  },
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-s/02/b5/66/a5/pan-asian.jpg",
+    locationId: 809446,
+    name: "Pan Asian",
+    averageRating: 5,
+    userReviewCount: 396,
+    currentOpenStatusCategory: "CLOSED",
+    currentOpenStatusText: "Closed Now",
+  },
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-s/23/67/e1/92/fiona.jpg",
+    locationId: 21387580,
+    name: "Fiona",
+    averageRating: 5,
+    userReviewCount: 281,
+    currentOpenStatusCategory: "CLOSING",
+    currentOpenStatusText: "Closes in 6 min",
+  },
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-s/19/3c/bf/71/ambiance-at-shanghai.jpg",
+    locationId: 1097143,
+    name: "Shanghai Club",
+    averageRating: 4.5,
+    userReviewCount: 278,
+    currentOpenStatusCategory: "CLOSED",
+    currentOpenStatusText: "Closed Now",
+  },
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-w/05/a4/79/b6/peshwa-pavilion.jpg",
+    locationId: 5913048,
+    name: "Peshwa Pavilion",
+    averageRating: 5,
+    userReviewCount: 1154,
+    currentOpenStatusCategory: "CLOSED",
+    currentOpenStatusText: "Closed Now",
+  },
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-s/21/59/55/0f/by-the-mekong-lounge.jpg",
+    locationId: 6929570,
+    name: "By the Mekong",
+    averageRating: 4.5,
+    userReviewCount: 528,
+    currentOpenStatusCategory: "CLOSING",
+    currentOpenStatusText: "Closes in 7 min",
+  },
+  {
+    heroImgUrl:
+      "https://media-cdn.tripadvisor.com/media/photo-s/0a/19/28/5d/bar-counter.jpg",
+    locationId: 5998754,
+    name: "Ark Bar",
+    averageRating: 5,
+    userReviewCount: 515,
+    currentOpenStatusCategory: "",
+    currentOpenStatusText: "",
+  },
+];
 ---
 
 <Layout>
   <main>
     <h1>Restaurantes</h1>
+    <ul class="restaurants-list">
+      {
+        restaurants?.map((restaurant: Restaurant) => (
+          <article class="restaurant_card">
+            <a href={`/places/${id}/${restaurant.locationId}`}>
+              <div class="location-id">ID: 6929570</div>
+              <img
+                src={`${restaurant.heroImgUrl}`}
+                alt={`${restaurant.name}`}
+                onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=Image+not+found';"
+                class="card-image"
+              />
+
+              <div class="card-content">
+                <h2 class="restaurant-name">{restaurant.name}</h2>
+
+                <div class="rating-container">
+                  <div class="stars">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                  </div>
+                  <span class="rating-text">{restaurant.averageRating}</span>
+                  <span class="review-count">
+                    ({restaurant.userReviewCount} reseñas)
+                  </span>
+                </div>
+
+                <div class="status-container">
+                  <div class="status-indicator" />
+                  <span class="status-text">
+                    {restaurant.currentOpenStatusText}
+                  </span>
+                </div>
+              </div>
+            </a>
+          </article>
+        ))
+      }
+    </ul>
   </main>
 </Layout>

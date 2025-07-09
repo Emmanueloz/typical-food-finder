@@ -3,10 +3,10 @@ import Layout from "../../../../layouts/Layout.astro";
 
 export const prerender = false; // Muy importante
 
-const { id } = Astro.params;
+const { id, idR } = Astro.params;
 console.log(Astro.url);
 ---
 
 <Layout>
-  <h1>Restaurante {id}</h1>
+  <h1>Restaurante {idR}</h1>
 </Layout>
