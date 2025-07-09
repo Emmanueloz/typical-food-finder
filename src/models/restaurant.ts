@@ -1,5 +1,5 @@
 interface Restaurant {
-  locationId: number;
+  restaurantsId: string;
   heroImgUrl: string;
   name: string;
   averageRating: number;

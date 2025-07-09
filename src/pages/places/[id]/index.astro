@@ -26,7 +26,7 @@ const getRestaurants = async (
 
     return restaurants?.map(
       (restaurant: any): Restaurant => ({
-        locationId: restaurant.locationId,
+        restaurantsId: restaurant.restaurantsId,
         heroImgUrl: restaurant.heroImgUrl,
         name: restaurant.name,
         averageRating: restaurant.averageRating,
@@ -42,7 +42,8 @@ const getRestaurants = async (
 };
 
 const { id } = Astro.params;
-//const restaurants: Restaurant[] = await getRestaurants(id ?? "");
+const restaurants = await getRestaurants(id ?? "");
+/**
 const restaurants: Array<Restaurant> | null = [
   {
     heroImgUrl:
@@ -246,6 +247,7 @@ const restaurants: Array<Restaurant> | null = [
     currentOpenStatusText: "",
   },
 ];
+ */
 ---
 
 <Layout>
@@ -255,8 +257,7 @@ const restaurants: Array<Restaurant> | null = [
       {
         restaurants?.map((restaurant: Restaurant) => (
           <article class="restaurant_card">
-            <a href={`/places/${id}/${restaurant.locationId}`}>
-              <div class="location-id">ID: 6929570</div>
+            <a href={`/places/${id}/${restaurant.restaurantsId}`}>
               <img
                 src={`${restaurant.heroImgUrl}`}
                 alt={`${restaurant.name}`}
