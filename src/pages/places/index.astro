@@ -1,0 +1,111 @@
+---
+import "../../styles/Places.css";
+import { config } from "../../config";
+import Layout from "../../layouts/Layout.astro";
+import type { Place } from "../../models/places";
+
+export const prerender = false;
+
+const place = Astro.url.searchParams.get("place") ?? "Ocosingo";
+
+const getPlaces = async (location: string) => {
+  const url = `https://tripadvisor16.p.rapidapi.com/api/v1/restaurant/searchLocation?query=${location}`;
+  const options = {
+    method: "GET",
+    headers: {
+      "x-rapidapi-key": `${config.X_RAPID_API_KEY}`,
+      "x-rapidapi-host": "tripadvisor16.p.rapidapi.com",
+    },
+  };
+
+  try {
+    const res = await fetch(url, options);
+    const body = await res.json();
+
+    const places: Array<any> | null = body.data;
+    console.log(body);
+
+    return places?.map((place) => {
+      const urlImg = place.thumbnail.photoSizeDynamic.uriTemplate;
+      console.log(urlImg);
+
+      return {
+        id: place.id,
+        locationId: place.locationId,
+        placeType: place.placeType,
+        localizedName: place.localizedName,
+        imageUrl: "",
+      };
+    });
+  } catch (error) {
+    console.error(error);
+
+    return [];
+  }
+};
+
+const places = await getPlaces(place);
+/**
+const places: Array<Place> | null = [
+  {
+    locationId: 304554,
+    localizedName: "Mumbai",
+    placeType: "CITY",
+    imageUrl:
+      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0b/4e/55/e6/chhatrapati-shivaji-terminus.jpg",
+  },
+  {
+    locationId: 17643064,
+    localizedName: "Mumbai Kitchen",
+    placeType: "EATERY",
+    imageUrl:
+      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/18/2a/8b/67/mumbai-kitchen-logo.jpg",
+  },
+  {
+    locationId: 18380500,
+    localizedName: "Mumbai Masala Puerto Calero",
+    placeType: "EATERY",
+    imageUrl:
+      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1d/a3/e3/8b/mumbai-masala-puerto.jpg",
+  },
+  {
+    locationId: 12450817,
+    localizedName: "Mumbai Masala Jameos",
+    placeType: "EATERY",
+    imageUrl:
+      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/76/7c/a5/mumbai-masala-jameos.jpg",
+  },
+];
+ */
+---
+
+<Layout>
+  <main>
+    <h1>Lugares</h1>
+    <form class="form-search" action="/places" method="get">
+      <label for="place">Lugar</label>
+      <input
+        type="search"
+        name="place"
+        id="place"
+        placeholder="Lugar"
+        value=`${place}`
+      />
+      <button type="submit">Buscar</button>
+    </form>
+    <u class="places-list">
+      {
+        places?.map((place: any) => (
+          <article class="place_card">
+            <a href={`/places/${place.locationId}`}>
+              <h2>{place.localizedName}</h2>
+              <img src={`${place.imageUrl}`} alt={place.localizedName} />
+              <small>{place.placeType}</small>
+              <p>{place.address}</p>
+            </a>
+          </article>
+        ))
+      }
+    </u>
+  </main>
+</Layout>
