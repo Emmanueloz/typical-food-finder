@@ -1,5 +1,5 @@
 ---
-import { any } from "astro:schema";
+import "../../styles/Places.css";
 import { config } from "../../config";
 import Layout from "../../layouts/Layout.astro";
 import type { Place } from "../../models/places";
@@ -44,33 +44,66 @@ const getPlaces = async (location: string) => {
   }
 };
 
-const places = await getPlaces(place);
+//const places = await getPlaces(place);
+const places: Array<Place> | null = [
+  {
+    locationId: 304554,
+    localizedName: "Mumbai",
+    placeType: "CITY",
+    imageUrl:
+      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0b/4e/55/e6/chhatrapati-shivaji-terminus.jpg",
+  },
+  {
+    locationId: 17643064,
+    localizedName: "Mumbai Kitchen",
+    placeType: "EATERY",
+    imageUrl:
+      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/18/2a/8b/67/mumbai-kitchen-logo.jpg",
+  },
+  {
+    locationId: 18380500,
+    localizedName: "Mumbai Masala Puerto Calero",
+    placeType: "EATERY",
+    imageUrl:
+      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1d/a3/e3/8b/mumbai-masala-puerto.jpg",
+  },
+  {
+    locationId: 12450817,
+    localizedName: "Mumbai Masala Jameos",
+    placeType: "EATERY",
+    imageUrl:
+      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/76/7c/a5/mumbai-masala-jameos.jpg",
+  },
+];
 ---
 
 <Layout>
-  <h1>Lugares</h1>
-  <form method="get" action="/places">
-    <label for="place">Lugar</label>
-    <input
-      type="search"
-      name="place"
-      id="place"
-      placeholder="Lugar"
-      value=`${place}`
-    />
-    <button type="submit">Buscar</button>
-  </form>
-  <ul>
-    {
-      places?.map((place: any) => (
-        <article>
-          <h2>
-            <a href={`/places/${place.locationId}`}>{place.localizedName}</a>
-          </h2>
-          <small>{place.placeType}</small>
-          <p>{place.address}</p>
-        </article>
-      ))
-    }
-  </ul>
+  <main>
+    <h1>Lugares</h1>
+    <form class="form-search" action="/places" method="get">
+      <label for="place">Lugar</label>
+      <input
+        type="search"
+        name="place"
+        id="place"
+        placeholder="Lugar"
+        value=`${place}`
+      />
+      <button type="submit">Buscar</button>
+    </form>
+    <u class="places-list">
+      {
+        places?.map((place: any) => (
+          <article class="place_card">
+            <a href={`/places/${place.locationId}`}>
+              <h2>{place.localizedName}</h2>
+              <img src={`${place.imageUrl}`} alt={place.localizedName} />
+              <small>{place.placeType}</small>
+              <p>{place.address}</p>
+            </a>
+          </article>
+        ))
+      }
+    </u>
+  </main>
 </Layout>

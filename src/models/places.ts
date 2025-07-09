@@ -1,6 +1,5 @@
 interface Place {
-  id: string;
-  locationId: string;
+  locationId: number;
   placeType: string;
   localizedName: string;
   imageUrl: string;
