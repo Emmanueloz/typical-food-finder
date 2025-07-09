@@ -1,0 +1,11 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+export const prerender = false; // Muy importante para no renderizar la página
+
+const { id } = Astro.params;
+---
+
+<Layout>
+  <h1>Receta {id}</h1>
+</Layout>
