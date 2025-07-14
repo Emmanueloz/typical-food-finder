@@ -1,0 +1,141 @@
+---
+import "../../styles/Event.css";
+
+import Layout from "../../layouts/Layout.astro";
+import { config } from "../../config";
+
+export const prerender = false;
+
+const { id } = Astro.params;
+
+const getEventDetail = async (id: string): Promise<EventDetail | null> => {
+  const url = `https://eventbrite-api4.p.rapidapi.com/details_byeid?eid=${id}`;
+  const options = {
+    method: "GET",
+    headers: {
+      "x-rapidapi-key": `${config.X_RAPID_API_KEY}`,
+      "x-rapidapi-host": "eventbrite-api4.p.rapidapi.com",
+    },
+  };
+
+  try {
+    const res = await fetch(url, options);
+    const body = await res.json();
+
+    const bodyJson = JSON.parse(body);
+    const event = bodyJson.result;
+
+    console.log(bodyJson);
+    console.log("event", event);
+
+    return {
+      organizer_info: {
+        eventTitle: event.organizer_info.eventTitle,
+        displayOrganizationName: event.organizer_info.displayOrganizationName,
+        thumbnailLogo80: event.organizer_info.thumbnailLogo80,
+        nameTruncated: event.organizer_info.nameTruncated,
+        id: event.organizer_info.id,
+      },
+      event: {
+        end: {
+          timezone: event.event.end.timezone,
+          local: event.event.end.local,
+          utc: event.event.end.utc,
+        },
+        name: event.event.name,
+        start: {
+          timezone: event.event.start.timezone,
+          local: event.event.start.local,
+          utc: event.event.start.utc,
+        },
+        url: event.event.url,
+        startDateTime: event.event.startDateTime,
+      },
+      about: [
+        {
+          about_us: event.about?.[0]?.about_us || "<p>Sin descripción</p>",
+        },
+      ],
+    };
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+const eventDetail: EventDetail | null = await getEventDetail(id ?? "");
+
+if (!eventDetail) {
+  // Mostrar pagina 404, o algo similar en astro
+  return Astro.redirect("/404");
+}
+
+/*
+const eventDetail: EventDetail = {
+  organizer_info: {
+    eventTitle: "THE GREATEST SHOW ON EARTH | REVEL SATURDAYS",
+    displayOrganizationName: "Born Civil Group",
+    thumbnailLogo80:
+      "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F422280249%2F575490477329%2F1%2Foriginal.20230111-045550?h=80&w=512&auto=format%2Ccompress&q=75&sharp=10&rect=14%2C0%2C1200%2C1200&s=6a0933e17895b76bbab7bee08ed991f9",
+    nameTruncated: "Born Civil Group",
+    id: "34444987843",
+  },
+  event: {
+    end: {
+      timezone: "America/New_York",
+      local: "2025-07-20T03:00:00",
+      utc: "2025-07-20T07:00:00Z",
+    },
+    name: "THE GREATEST SHOW ON EARTH | REVEL SATURDAYS",
+    start: {
+      timezone: "America/New_York",
+      local: "2025-07-19T22:00:00",
+      utc: "2025-07-20T02:00:00Z",
+    },
+    url: "https://www.eventbrite.com/e/the-greatest-show-on-earth-revel-saturdays-tickets-179620629137",
+    startDateTime: "2025-07-19",
+  },
+  about: [
+    {
+      about_us:
+        "<p>Join us every week at <em><strong><strong>T</strong></strong></em><em><strong><strong>HE GREATEST SHOW ON EARTH </strong></strong></em>for the #1 Saturday night party in Atlanta! This is our star studded permiere event with lots of live entertainment throughout the night. Revel Saturdays is the perfect ambiance to celebrate any special ocassion.</p><p><br></p><ul><li>Atlanta's top DJs (Hip Hop, R&amp;B (old &amp; new), Afro Beats &amp; Reggae)</li><li>Go-go dancers, celebrity guest</li><li>Enhancing your visual experience with top tier light shows &amp; LED digital screens</li><li>Ample Valet Parking</li><li>Free Entry Until 11PM W/ RSVP</li></ul><p>VIP SECTIONS ARE IN HIGH DEMAND, SO BOOK YOURS ASAP!</p><p><strong><strong>Text (516) 424-7280 to secure your section</strong></strong></p><p><em><strong><strong>Powered by @born.civil x @revelatlanta</strong></strong></em></p>",
+    },
+  ],
+};
+
+*/
+---
+
+<Layout>
+  <main>
+    <div class="event-header">
+      <img src={eventDetail?.organizer_info.thumbnailLogo80} alt="Logo" />
+      <div>
+        <h2 class="event-title">{eventDetail?.event.name}</h2>
+        <div class="org-name">
+          Organizado por {eventDetail?.organizer_info.displayOrganizationName}
+        </div>
+      </div>
+    </div>
+
+    <div class="event-info">
+      <p>
+        <strong>Inicio:</strong>
+        {eventDetail?.event.start.local} ({eventDetail?.event.start.timezone})
+      </p>
+      <p>
+        <strong>Fin:</strong>
+        {eventDetail?.event.end.local} ({eventDetail?.event.end.timezone})
+      </p>
+      <p>
+        <strong>Link:</strong>
+        <a href={eventDetail?.event.url} target="_blank">Ver evento</a>
+      </p>
+    </div>
+
+    <div class="event-about">
+      <h3>Acerca del evento</h3>
+      <div set:html={eventDetail?.about[0].about_us} />
+    </div>
+  </main>
+</Layout>
