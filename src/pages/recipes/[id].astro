@@ -6,46 +6,69 @@ export const prerender = false;
 const { id } = Astro.params;
 const apiKey = import.meta.env.X_RAPID_API_KEY;
 
-const response = await fetch(`https://the-mexican-food-db.p.rapidapi.com/${id}`, {
-  headers: {
-    'X-RapidAPI-Key': apiKey,
-    'X-RapidAPI-Host': 'the-mexican-food-db.p.rapidapi.com'
+const response = await fetch(
+  `https://the-mexican-food-db.p.rapidapi.com/${id}`,
+  {
+    headers: {
+      "X-RapidAPI-Key": apiKey,
+      "X-RapidAPI-Host": "the-mexican-food-db.p.rapidapi.com",
+    },
   }
-});
+);
 const recipe = await response.json();
 ---
 
 <Layout>
-  {recipe && recipe.title ? (
-    <main style="max-width: 700px; margin: 2rem auto; padding: 2rem; background: #fff; border-radius: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.07);">
-      <h1 style="text-align:center; margin-bottom: 1rem;">{recipe.title}</h1>
-      <img src={recipe.image} alt={recipe.title} style="display:block; max-width:350px; max-height:250px; margin: 0 auto 1.5rem auto; border-radius: 0.5rem; object-fit:cover; box-shadow:0 1px 6px rgba(0,0,0,0.08);" />
-      <p><strong>Dificultad:</strong> {recipe.difficulty}</p>
-      {recipe.portion && <p><strong>Porciones:</strong> {recipe.portion}</p>}
-      {recipe.time && <p><strong>Tiempo:</strong> {recipe.time}</p>}
-      {recipe.description && <p style="margin:1rem 0;">{recipe.description}</p>}
-      {recipe.ingredients && recipe.ingredients.length > 0 && (
-        <section style="margin:1.5rem 0;">
-          <h2 style="font-size:1.2rem; margin-bottom:0.5rem;">Ingredientes</h2>
-          <ul style="padding-left:1.2rem;">
-            {recipe.ingredients.map((ing) => (
-              <li>{ing}</li>
-            ))}
-          </ul>
-        </section>
-      )}
-      {recipe.method && recipe.method.length > 0 && (
-        <section style="margin:1.5rem 0;">
-          <h2 style="font-size:1.2rem; margin-bottom:0.5rem;">Preparación</h2>
-          <ol style="padding-left:1.2rem;">
-            {recipe.method.map((step, idx) => (
-              <li style="margin-bottom:0.5rem;">{Object.values(step)[0]}</li>
-            ))}
-          </ol>
-        </section>
-      )}
-    </main>
-  ) : (
-    <p>No se encontró la receta.</p>
-  )}
+  {
+    recipe && recipe.title ? (
+      <main style="max-width: 700px; margin: 2rem auto; padding: 2rem; background: #fff; border-radius: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.07);">
+        <h1 style="text-align:center; margin-bottom: 1rem;">{recipe.title}</h1>
+        <img
+          src={recipe.image}
+          alt={recipe.title}
+          style="display:block; max-width:350px; max-height:250px; margin: 0 auto 1.5rem auto; border-radius: 0.5rem; object-fit:cover; box-shadow:0 1px 6px rgba(0,0,0,0.08);"
+        />
+        <p>
+          <strong>Dificultad:</strong> {recipe.difficulty}
+        </p>
+        {recipe.portion && (
+          <p>
+            <strong>Porciones:</strong> {recipe.portion}
+          </p>
+        )}
+        {recipe.time && (
+          <p>
+            <strong>Tiempo:</strong> {recipe.time}
+          </p>
+        )}
+        {recipe.description && (
+          <p style="margin:1rem 0;">{recipe.description}</p>
+        )}
+        {recipe.ingredients && recipe.ingredients.length > 0 && (
+          <section style="margin:1.5rem 0;">
+            <h2 style="font-size:1.2rem; margin-bottom:0.5rem;">
+              Ingredientes
+            </h2>
+            <ul style="padding-left:1.2rem;">
+              {recipe.ingredients.map((ing: any) => (
+                <li>{ing}</li>
+              ))}
+            </ul>
+          </section>
+        )}
+        {recipe.method && recipe.method.length > 0 && (
+          <section style="margin:1.5rem 0;">
+            <h2 style="font-size:1.2rem; margin-bottom:0.5rem;">Preparación</h2>
+            <ol style="padding-left:1.2rem;">
+              {recipe.method.map((step: any, idx: any) => (
+                <li style="margin-bottom:0.5rem;">{Object.values(step)[0]}</li>
+              ))}
+            </ol>
+          </section>
+        )}
+      </main>
+    ) : (
+      <p>No se encontró la receta.</p>
+    )
+  }
 </Layout>
