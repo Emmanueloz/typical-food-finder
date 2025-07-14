@@ -1,0 +1,548 @@
+---
+import "../styles/Places.css";
+
+const categories = [
+  {
+    name: "San Cristóbal de las Casas",
+    recipes: [
+      {
+        id: 1,
+        name: "Tamal de bola",
+        imageUrl: "https://www.la-cocina-mexicana.com/base/stock/Recipe/tamales-de-bola/tamales-de-bola_web.jpg.webp",
+        description: "Dos masas de maíz (una más fina que otra), envueltas en hoja de maíz, rellenas con salsa de chile Simojovel. Platillo ceremonial de herencia prehispánica.",
+        details: {
+          ingredientes: [
+            "1 kg masa de maíz para tamal",
+            "300 g manteca de cerdo",
+            "½ cdita de polvo de hornear",
+            "Sal al gusto",
+            "½ kg costilla de cerdo (cocida, deshebrada)",
+            "Para el recado: ¼ kg jitomate, ¼ cebolla, 2 dientes de ajo, chiles anchos/guajillo (3–4), comino y orégano",
+            "30–40 hojas de maíz remojadas"
+          ],
+          preparacion: [
+            "Cocina la costilla; fríe en manteca y sofríe la cebolla, ajo, jitomate, chiles, comino y orégano. Muele todo hasta obtener una salsa espesa y sazona.",
+            "Bate la manteca, añade sal, polvo de hornear y mezcla con masa hasta lograr textura esponjosa.",
+            "Coloca 2–3 cucharadas de masa en hoja, añade salsa y un trozo de costilla. Envuelve como bola y ata con tiras de hoja.",
+            "Cocina al vapor, con hojas en el fondo, 2–2.5 h hasta que la masa se separe de la hoja."
+          ]
+        }
+      },
+      {
+        id: 2,
+        name: "Sopa de pan",
+        imageUrl: "https://oem.com.mx/elheraldodechiapas/img/21575765/1738970129/BASE_LANDSCAPE/1200/image.webp",
+        description: "Sopa típica de San Cristóbal, lleva pan coleto, plátano macho frito, azafrán, huevo duro y pasas. Tradicionalmente servida en eventos religiosos.",
+        details: {
+          ingredientes: [
+            "1 pan coleto (o bolillo duro)",
+            "2 plátanos macho",
+            "2 jitomates",
+            "1 cebolla",
+            "2 dientes de ajo",
+            "1 ramita de azafrán o colorante natural",
+            "1 litro de caldo de pollo",
+            "2 huevos duros",
+            "1/2 taza de pasas",
+            "1/2 taza de almendras fileteadas",
+            "1/2 taza de queso fresco desmoronado",
+            "Aceite vegetal",
+            "Sal y pimienta al gusto"
+          ],
+          preparacion: [
+            "Corta el pan en rebanadas y fríe en aceite hasta dorar. Reserva.",
+            "Fríe los plátanos en rodajas hasta que estén dorados. Reserva.",
+            "Hierve jitomate, cebolla, ajo y azafrán en el caldo de pollo. Cuela y regresa el caldo a la olla.",
+            "Agrega el pan frito, plátano, pasas, almendras y cocina unos minutos.",
+            "Sirve caliente y decora con huevo duro y queso fresco."
+          ]
+        }
+      },
+      {
+        id: 3,
+        name: "Chalupas coletas",
+        imageUrl: "https://oem.com.mx/elheraldodechiapas/img/21654030/1739388924/BASE_LANDSCAPE/480/image.webp",
+        description: "Tortillas de maíz con frijoles, carne deshebrada (cerdo o res), zanahoria, betabel y queso típico fundido.",
+        details: {
+          ingredientes: [
+            "Tortillas de maíz pequeñas",
+            "Frijoles refritos",
+            "Carne deshebrada de cerdo o res",
+            "Zanahoria rallada",
+            "Betabel rallado",
+            "Queso típico chiapaneco (o fresco) fundido",
+            "Aceite para freír",
+            "Sal al gusto"
+          ],
+          preparacion: [
+            "Fríe ligeramente las tortillas en aceite caliente.",
+            "Unta frijoles refritos sobre cada tortilla.",
+            "Agrega carne deshebrada, zanahoria y betabel rallados.",
+            "Cubre con queso fundido y sirve caliente."
+          ]
+        }
+      },
+    ]
+  },
+  {
+    name: "Tuxtla Gutiérrez (capital)",
+    recipes: [
+      {
+        id: 4,
+        name: "Tostadas tuxtlecas o pichanchas",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpyPvf_gI1wlzlYqNYQ-yyHkXKF7_GCwvScA&s",
+        description: "Tortillas crujientes con toppings variados como suadero, frijoles fritos y queso, a menudo acompañadas de marimba.",
+        details: {
+          ingredientes: [
+            "Tostadas de maíz",
+            "Suadero cocido y picado",
+            "Frijoles refritos",
+            "Queso fresco desmoronado",
+            "Salsa de jitomate",
+            "Lechuga picada",
+            "Crema al gusto"
+          ],
+          preparacion: [
+            "Unta frijoles refritos sobre las tostadas.",
+            "Agrega suadero, lechuga, salsa y queso fresco.",
+            "Decora con crema y sirve inmediatamente."
+          ]
+        }
+      },
+      {
+        id: 5,
+        name: "Sopa de chipilín con bolitas",
+        imageUrl: "https://www.la-cocina-mexicana.com/base/stock/Recipe/chipilin-con-bolitas/chipilin-con-bolitas_web.jpg.webp",
+        description: "Caldo ligero con hojas de chipilín y bolitas rellenas de queso.",
+        details: {
+          ingredientes: [
+            "1 manojo de chipilín (hojas)",
+            "1 litro de caldo de pollo",
+            "2 elotes tiernos desgranados",
+            "200 g de masa de maíz",
+            "100 g de queso fresco",
+            "1 huevo",
+            "Sal al gusto"
+          ],
+          preparacion: [
+            "Mezcla la masa con huevo, sal y queso fresco para formar bolitas.",
+            "Hierve el chipilín y elote en el caldo.",
+            "Agrega las bolitas y cocina hasta que suban a la superficie.",
+            "Sirve caliente."
+          ]
+        }
+      },
+      {
+        id: 6,
+        name: "Coquito (cochito horneado)",
+        imageUrl: "https://i.blogs.es/7367f1/650_1000_cochito_horneado_de_chiapas/450_1000.jpg",
+        description: "Cerdo adobado y horneado en salsa de chile ancho, jitomate y hierbas; típico en la Fiesta Grande de Chiapa de Corzo pero presente también en Tuxtla.",
+        details: {
+          ingredientes: [
+            "2 kg de carne de cerdo (pierna o lomo)",
+            "4 chiles anchos",
+            "4 jitomates",
+            "1 cebolla",
+            "4 dientes de ajo",
+            "1/2 taza de vinagre",
+            "1 cucharada de orégano",
+            "1 cucharada de tomillo",
+            "1 cucharada de pimienta negra",
+            "1 hoja de laurel",
+            "Sal al gusto"
+          ],
+          preparacion: [
+            "Licúa los chiles, jitomates, ajo, cebolla y especias con vinagre para hacer el adobo.",
+            "Marina la carne en el adobo por al menos 2 horas.",
+            "Hornea a 180°C durante 2 horas o hasta que esté suave.",
+            "Sirve en rebanadas con el jugo del horneado."
+          ]
+        }
+      },
+    ]
+  },
+  {
+    name: "Chiapa de Corzo",
+    recipes: [
+      {
+        id: 7,
+        name: "Chipilín con bolitas",
+        imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhgsHjYBMvLrxJbzcCVuAI5LUN3ZYj8SX3XD9rw11Yede58fxE4QQWjAEkpIzl7JsZVk870DVs3ryk9m0RqhyphenhyphenHX9Qgk9dK1ej3rQEOOFxNb3HdDJt-RBvXSRmzr4mTQ258BvtUpFftLs8k/s1600/bolitas.jpg",
+        description: "Plato muy representativo en toda la región central: hojas de chipilín y granos de elote con bolitas de masa rellenas de queso.",
+        details: {
+          historia: "Origen mayense: 'Chepil‑Ix' – hojas de luna; ligado a leyendas con la diosa Ixchel y al dios de la lluvia Chac.",
+          ingredientes: [
+            "1 manojo grande de hojas de chipilín (~50 g)",
+            "2 L agua + sal",
+            "2 elotes tiernos, cortados o granos",
+            "200 g masa de maíz",
+            "30 g manteca o aceite",
+            "150 g queso crema o fresco + crema para servir"
+          ],
+          preparacion: [
+            "Hervir chipilín y elote en agua con sal hasta que estén suaves.",
+            "Mezclar masa con manteca y parte del chipilín/elote para formar bolitas con centro de queso.",
+            "Licúa el resto del caldo con un poco de masa y agrega al agua hirviendo.",
+            "Incorpora las bolitas; cuando suban, están listas.",
+            "Sirve caliente con crema y queso."
+          ]
+        }
+      },
+      {
+        id: 8,
+        name: "Pepita con tasajo",
+        imageUrl: "https://www.turimexico.com/wp-content/uploads/2016/08/Receta-Pepita-con-Tasajo-900x500.jpg",
+        description: "Tiras de res saladas ('tasajo') en mole de pepita de calabaza y arroz con achiote; plato ceremonial.",
+        details: {
+          ingredientes: [
+            "1 kg de tasajo (carne seca de res)",
+            "300 g de pepita de calabaza tostada y molida",
+            "2 cucharadas de arroz remojado",
+            "100 g de pasta de achiote",
+            "2 jitomates",
+            "1/4 de cebolla",
+            "3 dientes de ajo",
+            "150 g de manteca de cerdo",
+            "Agua o caldo",
+            "Sal y pimienta al gusto"
+          ],
+          preparacion: [
+            "Cuece el tasajo en agua hasta que esté suave y deshebra.",
+            "Tuesta y muele la pepita y el arroz.",
+            "Licúa jitomate, cebolla y ajo; fríe en manteca.",
+            "Agrega arroz con achiote, después pepita disuelta; cocina removiendo.",
+            "Añade el tasajo y cocina unos minutos. Sirve con arroz blanco."
+          ]
+        }
+      },
+      {
+        id: 9,
+        name: "Chanfaina",
+        imageUrl: "https://resizer.glanacion.com/resizer/v2/chanfaina-con-menudos-de-MP2Z2GP3UVE3VHSSO5NLR6HOZY.jpg?auth=5d73b6971e7f6d9ec9581da57110ff56a60c4db6f422e7b8f3977e7c68c2c0ff&width=1280&height=854&quality=70&smart=true",
+        description: "Guisado tradicional elaborado con vísceras y condimentos locales, parte del 'Comida Grande'.",
+        details: {
+          ingredientes: [
+            "1 kg panza de res",
+            "500 g hígado de res",
+            "500 g vísceras surtidas (corazón, bazo, riñón)",
+            "1 cebolla",
+            "4 jitomates",
+            "3 dientes de ajo",
+            "10 pimientas de Castilla",
+            "6 clavos de olor",
+            "1 raja de canela",
+            "1 pizca de orégano, tomillo, laurel",
+            "2 cucharadas vinagre, aceite o manteca",
+            "Sal al gusto",
+            "Opcional: papas en cubos"
+          ],
+          preparacion: [
+            "Cocina panza, vísceras e hígado en agua con sal hasta que estén suaves. Reserva caldo.",
+            "Pica las vísceras y parte del hígado. Licúa jitomate, ajo, cebolla, vinagre y especias.",
+            "Fríe la salsa; agrega caldo y el resto del hígado licuado.",
+            "Añade vísceras, laurel, clavos, pimienta, canela; hierve 20 min.",
+            "Incorpora panza picada (y papas si deseas); cocina 10 min más. Sirve con arroz blanco."
+          ]
+        }
+      },
+    ]
+  },
+  {
+    name: "Tapachula",
+    recipes: [
+      {
+        id: 10,
+        name: "Pescado en chumul",
+        imageUrl: "https://www.recetasnestle.com.mx/sites/default/files/srh_recipes/b3c4fd4578eab24929b02c49ff65f88f.jpg",
+        description: "Pescado de la costa preparado con jitomate, cebolla y especias.",
+        details: {
+          ingredientes: [
+            "1 kg de pescado fresco (mojarra, robalo, etc.)",
+            "3 jitomates",
+            "1 cebolla",
+            "2 dientes de ajo",
+            "1 ramita de epazote",
+            "Aceite vegetal",
+            "Sal y pimienta al gusto"
+          ],
+          preparacion: [
+            "Limpia y corta el pescado en piezas.",
+            "Fríe jitomate, cebolla y ajo picados en aceite.",
+            "Agrega el pescado, epazote, sal y pimienta. Cocina tapado hasta que el pescado esté suave.",
+            "Sirve caliente con arroz blanco."
+          ]
+        }
+      },
+      {
+        id: 11,
+        name: "Sopa de chipilín con camarón",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR82QazSNkpu6FHhN7I4YgFs3bT3KWZuixquw&s",
+        description: "Versión adaptada con mariscos propios de la región.",
+        details: {
+          ingredientes: [
+            "1 manojo de chipilín",
+            "200 g de camarón fresco pelado",
+            "1 litro de caldo de pollo o pescado",
+            "2 elotes tiernos desgranados",
+            "200 g de masa de maíz",
+            "100 g de queso fresco",
+            "1 huevo",
+            "Sal al gusto"
+          ],
+          preparacion: [
+            "Mezcla la masa con huevo, sal y queso fresco para formar bolitas.",
+            "Hierve el chipilín, elote y camarón en el caldo.",
+            "Agrega las bolitas y cocina hasta que suban a la superficie.",
+            "Sirve caliente."
+          ]
+        }
+      },
+    ]
+  },
+  {
+    name: "Tonalá (Región Costa-Centro)",
+    recipes: [
+      {
+        id: 13,
+        name: "Tamales de cambray",
+        imageUrl: "https://visitchiapas.com/v1/admin/archivos/Turismo/multimedia/f580bb98_15062020_0529.jpg",
+        description: "Tamales de cerdo con canela y almendras, mole, chipilín, camarón y de iguana.",
+        details: {
+          ingredientes: [
+            "2 kg masa de nixtamal",
+            "1 kg manteca de cerdo",
+            "1 kg carne de cerdo cocida y deshebrada",
+            "250 g chícharos",
+            "250 g ejotes",
+            "2 papas",
+            "2 zanahorias",
+            "1 plátano macho (en cubos, frito)",
+            "8 huevos duros picados",
+            "100 g aceitunas",
+            "100 g almendras",
+            "80 g pasas",
+            "4 jitomates",
+            "1 cebolla",
+            "1 chile serrano",
+            "3 cucharadas azúcar",
+            "Sal y aceite",
+            "Hojas de plátano remojadas"
+          ],
+          preparacion: [
+            "Bate manteca, masa y sal hasta obtener textura suave.",
+            "Cuece verduras con sal, pica y reserva.",
+            "Fríe jitomate y cebolla, licúa y rehoga salsa; sazona con sal y azúcar.",
+            "Fríe cubos de plátano; reserva.",
+            "Sobre hoja de plátano, extiende masa; agrega carne, verduras, huevo, aceitunas, pasas, almendras y plátano.",
+            "Envuelve tipo cilindro, amarra los extremos y cocina al vapor 1 hora."
+          ]
+        }
+      },
+      {
+        id: 14,
+        name: "Panuchos",
+        imageUrl: "https://gustoxmexico.com/images/panuchos-portada.webp",
+        description: "Tortilla frita rellena de frijol y carne, con lechuga, tomate, queso y crema.",
+        details: {
+          ingredientes: [
+            "Tortillas de maíz",
+            "Frijoles refritos",
+            "Carne deshebrada de res o pollo",
+            "Lechuga picada",
+            "Tomate en rodajas",
+            "Queso fresco desmoronado",
+            "Crema al gusto",
+            "Aceite para freír"
+          ],
+          preparacion: [
+            "Fríe las tortillas y ábrelas para rellenar con frijoles y carne.",
+            "Agrega lechuga, tomate, queso y crema al gusto.",
+            "Sirve calientes."
+          ]
+        }
+      },
+      {
+        id: 15,
+        name: "Barbacoa de res",
+        imageUrl: "https://www.lasrecetasdelaura.com/wp-content/uploads/2020/04/barbacoa-cuad-1-500x500.jpg",
+        description: "Estofado en olla de barro con hoja de aguacate y vinagre, servido con arroz.",
+        details: {
+          ingredientes: [
+            "2 kg de carne de res para barbacoa",
+            "2 hojas de aguacate",
+            "1/2 taza de vinagre",
+            "2 dientes de ajo",
+            "1 cebolla",
+            "2 jitomates",
+            "Sal y pimienta al gusto"
+          ],
+          preparacion: [
+            "Coloca la carne en una olla con hojas de aguacate, ajo, cebolla, jitomate, vinagre, sal y pimienta.",
+            "Cubre con agua y cocina a fuego lento hasta que la carne esté suave.",
+            "Deshebra la carne y sirve con arroz y salsa."
+          ]
+        }
+      },
+    ]
+  },
+  {
+    name: "Otras delicias chiapanecas",
+    recipes: [
+      {
+        id: 16,
+        name: "Salsa de chicatanas",
+        imageUrl: "https://www.milenio.com/uploads/media/2020/07/05/salsa-hormiga-chicatana-ocupan-acompanar-2.jpeg",
+        description: "Picante, hecha con hormigas voladoras, chile, ajo y jitomate.",
+        details: {
+          ingredientes: [
+            "100 g de chicatanas (hormigas voladoras)",
+            "2 chiles serranos",
+            "2 jitomates",
+            "2 dientes de ajo",
+            "Sal al gusto"
+          ],
+          preparacion: [
+            "Limpia y tuesta las chicatanas en un comal.",
+            "Asa los chiles, jitomates y ajos.",
+            "Muele todo en molcajete o licuadora con sal al gusto.",
+            "Sirve como salsa para acompañar carnes o tortillas."
+          ]
+        }
+      },
+      {
+        id: 17,
+        name: "Mole chiapaneco",
+        imageUrl: "https://www.elimparcial.com/resizer/v2/OMOD7RHTWZGSRH7EJE4CWSXDDQ.jpg?auth=aa61e6c642c51189545dcbf0f59b982c0d567c7f65e44071c02463be51aeecae&smart=true&width=1200&height=800&quality=70",
+        description: "Mole con cacao y chiles, base de varios platos como guajolote en mole.",
+        details: {
+          ingredientes: [
+            "6 chiles anchos",
+            "4 chiles pasilla",
+            "2 chiles mulato",
+            "100 g de ajonjolí",
+            "100 g de almendras",
+            "50 g de cacahuate",
+            "50 g de pasas",
+            "2 tabletas de chocolate",
+            "2 jitomates",
+            "1 cebolla",
+            "2 dientes de ajo",
+            "1 tortilla de maíz",
+            "1 bolillo",
+            "1 rama de canela",
+            "Clavos de olor, pimienta, comino, sal al gusto"
+          ],
+          preparacion: [
+            "Desvena y tuesta los chiles. Fríe ajonjolí, almendras, cacahuate, pasas, tortilla y bolillo.",
+            "Licúa todo con jitomate, cebolla, ajo y especias.",
+            "Fríe la mezcla, agrega chocolate y cocina a fuego bajo hasta espesar.",
+            "Sirve con carne de guajolote o pollo."
+          ]
+        }
+      },
+      {
+        id: 18,
+        name: "Pozol",
+        imageUrl: "https://cdn7.kiwilimon.com/recetaimagen/38028/640x640/48467.jpg.jpg",
+        description: "Bebida prehispánica de maíz y cacao, refrescante y nutritiva.",
+        details: {
+          ingredientes: [
+            "1 1/2 tazas de masa de maíz nixtamalizado",
+            "3/4 taza de cacao en polvo o molido",
+            "1 litro de agua fría",
+            "Azúcar al gusto (opcional)",
+            "Hielo al gusto"
+          ],
+          preparacion: [
+            "Mezcla la masa y el cacao con un poco de agua hasta formar una pasta.",
+            "Agrega el resto del agua y disuelve bien.",
+            "Endulza al gusto y sirve frío con hielo."
+          ]
+        }
+      },
+      {
+        id: 19,
+        name: "Tascalate",
+        imageUrl: "https://cdn7.kiwilimon.com/recetaimagen/38029/640x640/48471.jpg.webp",
+        description: "Bebida fría con maíz, cacao, tortillas tostadas molidas, achiote, canela y azúcar.",
+        details: {
+          ingredientes: [
+            "1 taza de masa de maíz",
+            "1/2 taza de cacao en polvo",
+            "2 tortillas tostadas molidas",
+            "1 cucharadita de achiote",
+            "1 raja de canela",
+            "1/2 taza de azúcar",
+            "1 litro de agua fría"
+          ],
+          preparacion: [
+            "Mezcla todos los ingredientes secos en un recipiente.",
+            "Agrega el agua poco a poco, mezclando hasta disolver.",
+            "Sirve frío, endulza al gusto y acompaña con hielo si se desea."
+          ]
+        }
+      },
+    ]
+  },
+];
+---
+
+<main>
+  <h1 style="text-align:center;">Recetas chiapanecas</h1>
+  {categories.map((cat) => (
+    <section>
+      <h2 class="region-title">{cat.name}</h2>
+      <ul class="places-list">
+        {cat.recipes.map((recipe) => (
+          <li class="place_card recipe-card" data-recipe-id={recipe.id} style="cursor:pointer;">
+            <h3>{recipe.name}</h3>
+            <img src={recipe.imageUrl} alt={recipe.name} />
+            <p>{recipe.description}</p>
+            {recipe.details && (
+              <div class="recipe-details" style="display:none;">
+                {recipe.details.historia && (
+                  <>
+                    <strong>Historia:</strong> <span>{recipe.details.historia}</span>
+                    <br />
+                  </>
+                )}
+                <strong>Ingredientes:</strong>
+                <ul>
+                  {recipe.details.ingredientes.map((ing) => (
+                    <li>{ing}</li>
+                  ))}
+                </ul>
+                {recipe.details.preparacion && (
+                  <>
+                    <strong>Preparación:</strong>
+                    <ol>
+                      {recipe.details.preparacion.map((step) => (
+                        <li>{step}</li>
+                      ))}
+                    </ol>
+                  </>
+                )}
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.recipe-card');
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          // Oculta todos los detalles
+          document.querySelectorAll('.recipe-details').forEach(d => (d as HTMLElement).style.display = 'none');
+          // Muestra solo el de la card clickeada (si tiene)
+          const details = card.querySelector('.recipe-details');
+          if (details) {
+            (details as HTMLElement).style.display = 'block';
+          }
+        });
+      });
+    });
+  </script>
+</main>
