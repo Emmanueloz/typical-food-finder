@@ -2,7 +2,6 @@
 import "../../styles/Places.css";
 import { config } from "../../config";
 import Layout from "../../layouts/Layout.astro";
-import type { Place } from "../../models/places";
 
 export const prerender = false;
 
@@ -93,7 +92,7 @@ const places: Array<Place> | null = [
       />
       <button type="submit">Buscar</button>
     </form>
-    <u class="places-list">
+    <ul class="places-list">
       {
         places?.map((place: any) => (
           <article class="place_card">
@@ -106,6 +105,6 @@ const places: Array<Place> | null = [
           </article>
         ))
       }
-    </u>
+    </ul>
   </main>
 </Layout>

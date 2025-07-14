@@ -1,7 +1,190 @@
 ---
+import "../../styles/Events.css";
 import Layout from "../../layouts/Layout.astro";
+import { config } from "../../config";
+
+export const prerender = false;
+
+const state = Astro.url.searchParams.get("state") ?? "hg";
+const city = Astro.url.searchParams.get("city") ?? "Pachuca de Soto";
+
+const getEvents = async (state: string, city: string) => {
+  const url = `https://eventbrite-api4.p.rapidapi.com/search_bycat?city=${city}&state=${state}&page=1&selected_date=Do_Not_Include&category=Food_And_Drink&selected_languages=Do_Not_Include&currency=Do_Not_Include&format=Do_Not_Include&price=Do_Not_Include`;
+  const options = {
+    method: "GET",
+    headers: {
+      "x-rapidapi-key": `${config.X_RAPID_API_KEY}`,
+      "x-rapidapi-host": "eventbrite-api4.p.rapidapi.com",
+    },
+  };
+
+  try {
+    const res = await fetch(url, options);
+    const body = await res.json();
+
+    const events: Array<any> | null = body.events;
+    console.log(body);
+
+    return events?.map((event: any) => ({
+      event_name: event.event_name,
+      eid: event.eid,
+      published: event.published,
+      summary: event.summary,
+      primary_venue: {
+        name: event.primary_venue.name,
+        address: {
+          localized_address_display:
+            event.primary_venue.address.localized_address_display,
+          postal_code: event.primary_venue.address.postal_code,
+        },
+      },
+      start_date: event.start_date,
+      start_time: event.start_time,
+      end_time: event.end_time,
+    }));
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+const events = await getEvents(state, city);
+
+/*
+const events: EventData[] = [
+  {
+    event_name: "TRAP HOUSE BRUNCH + DAY PARTY",
+    eid: "130323899291",
+    published: "2020-11-23T21:59:26Z",
+    summary: "ATLANTA'S #1 SATURDAY DAY PARTY",
+    primary_venue: {
+      name: "Cafe Circa",
+      address: {
+        localized_address_display:
+          "464 Edgewood Avenue Southeast, Atlanta, GA 30312",
+        postal_code: "30312",
+      },
+    },
+    start_date: "2025-07-19",
+    start_time: "15:00",
+    end_time: "21:00",
+  },
+  {
+    event_name:
+      "REGGAE ON THE ROOF | ATLANTA'S #1 SATURDAY NIGHT CARIBBEAN PARTY",
+    eid: "127257012149",
+    published: "2020-10-29T02:05:22Z",
+    summary: "EVERY SATURDAY NIGHT",
+    primary_venue: {
+      name: "Cafe Circa",
+      address: {
+        localized_address_display:
+          "464 Edgewood Avenue Southeast, Atlanta, GA 30312",
+        postal_code: "30312",
+      },
+    },
+    start_date: "2025-07-19",
+    start_time: "22:00",
+    end_time: "03:00",
+  },
+  {
+    event_name: "R&B ROOFTOP DAY PARTY",
+    eid: "115577717063",
+    published: "2020-08-01T16:00:31Z",
+    summary: "ROOFTOP | MUSIC | FOOD & DRINKS",
+    primary_venue: {
+      name: "Cafe Circa",
+      address: {
+        localized_address_display:
+          "464 Edgewood Avenue Southeast, Atlanta, GA 30312",
+        postal_code: "30312",
+      },
+    },
+    start_date: "2025-07-20",
+    start_time: "15:00",
+    end_time: "21:00",
+  },
+];
+*/
 ---
 
 <Layout>
-  <h1>Eventos</h1>
+  <main>
+    <h1>Eventos</h1>
+    <form class="form-search" action="/events" method="get">
+      <label for="state">Estado</label>
+      <select name="state" id="state">
+        <option value="ag">Aguascalientes</option>
+        <option value="bc">Baja California</option>
+        <option value="bs">Baja California Sur</option>
+        <option value="cm">Campeche</option>
+        <option value="cs">Chiapas</option>
+        <option value="ch">Chihuahua</option>
+        <option value="co">Coahuila</option>
+        <option value="cl">Colima</option>
+        <option value="dg">Durango</option>
+        <option value="gt">Guanajuato</option>
+        <option value="gr">Guerrero</option>
+        <option value="hg" selected>Hidalgo</option>
+        <option value="ja">Jalisco</option>
+        <option value="mx">México</option>
+        <option value="mi">Michoacán</option>
+        <option value="mo">Morelos</option>
+        <option value="na">Nayarit</option>
+        <option value="nl">Nuevo León</option>
+        <option value="oa">Oaxaca</option>
+        <option value="pu">Puebla</option>
+        <option value="qt">Querétaro</option>
+        <option value="qr">Quintana Roo</option>
+        <option value="sl">San Luis Potosí</option>
+        <option value="si">Sinaloa</option>
+        <option value="so">Sonora</option>
+        <option value="tb">Tabasco</option>
+        <option value="tm">Tamaulipas</option>
+        <option value="tl">Tlaxcala</option>
+        <option value="ve">Veracruz</option>
+        <option value="yu">Yucatán</option>
+        <option value="za">Zacatecas</option>
+        <option value="cd">Ciudad de México</option>
+      </select>
+      <label for="city">Ciudad</label>
+      <input
+        type="search"
+        name="city"
+        id="city"
+        placeholder="Lugar"
+        value=`${city}`
+      />
+      <button type="submit">Buscar</button>
+    </form>
+    <ul class="events-list">
+      {
+        events?.map((event: any) => (
+          <article class="event_card">
+            <a href={`/events/${event.eid}`}>
+              <h2>{event.event_name}</h2>
+              <p>
+                <span class="label">Fecha:</span>
+                {event.start_date}
+              </p>
+              <p>
+                <span class="label">Horario:</span>
+                {event.start_time} -{event.end_time}
+              </p>
+              <p>
+                <span class="label">Lugar:</span> {event.primary_venue.name}
+              </p>
+              <p>
+                <span class="label">Dirección:</span>{" "}
+                {event.primary_venue.address.localized_address_display}
+              </p>
+              <p>
+                <span class="label">Resumen:</span> {event.summary}
+              </p>
+            </a>
+          </article>
+        ))
+      }
+    </ul>
+  </main>
 </Layout>
