@@ -1,0 +1,40 @@
+---
+import "../styles/Places.css";
+
+interface Recipe {
+  id: string;
+  title: string;
+  image: string;
+  difficulty: string;
+}
+
+// Usa la variable de entorno para la API key. Asegúrate de definir X_RAPID_API_KEY en tu archivo .env
+const apiKey = import.meta.env.X_RAPID_API_KEY;
+
+const response = await fetch('https://the-mexican-food-db.p.rapidapi.com/', {
+  headers: {
+    'X-RapidAPI-Key': apiKey, // Usa la variable de entorno
+    'X-RapidAPI-Host': 'the-mexican-food-db.p.rapidapi.com'
+  }
+});
+const recipes: Recipe[] = await response.json();
+---
+
+<main>
+  <h1 style="text-align:left;">Recetas mexicanas</h1>
+  <ul class="places-list">
+    {Array.isArray(recipes) && recipes.length > 0 ? (
+      recipes.map((recipe) => (
+        <li class="place_card">
+          <a href={`/recipes/${recipe.id}`}>
+            <h3>{recipe.title}</h3>
+            <img src={recipe.image} alt={recipe.title} />
+            <p><strong>Dificultad:</strong> {recipe.difficulty}</p>
+          </a>
+        </li>
+      ))
+    ) : (
+      <li>No hay recetas disponibles.</li>
+    )}
+  </ul>
+</main>
